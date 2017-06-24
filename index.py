@@ -16,3 +16,19 @@ if uid:
 	print "\nLogin realizado com secesso. \n"
 else:
 	print "\nVerifique as credenciais de acesso."
+
+sock = xmlrpclib.ServerProxy(url_object)
+
+# Insert a new customer
+id_new_customer = sock.execute_kw(db, uid, password, 'res.partner', 'create', [{
+  'name': "Cliente 82",
+  'email': "cliente82@teste.com",
+  'phone': "(48) 99884-9093",
+  'zip': "88037-908"
+}])
+
+if id_new_customer:
+	print 'Cliente cadastrado com sucesso! \n'
+	print 'ID: ' + str(id_new_customer) + '\n'
+else:
+	print 'Não foi possivel salvar o registro do cliente! \n'
