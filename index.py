@@ -85,4 +85,16 @@ class odooActivities():
     
     except:
       print '\nOcorreu um erro, contate o administrador.\n'
-  	
+
+  def list_greatest_sale_made(self):
+    try:
+      # List greatest sale made
+      items = self.sock.execute_kw(self.db, self.uid, self.password,
+        'sale.order', 'search_read',
+        [[['state', '=', 'sale']]],
+        {'fields': ['amount_total', 'partner_invoice_id'], 'order': 'amount_total desc', 'limit': 1})
+
+      for item in items:
+        print item
+    except:
+      print '\nOcorreu um erro, contate o administrador.\n'
