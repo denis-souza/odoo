@@ -70,3 +70,19 @@ class odooActivities():
       print '\nAtualmente existem ' + str(count) + ' clientes na base.\n'
     except:
       print '\nOcorreu um erro, contate o administrador.\n'
+
+  def list_customers_ordering_name(self):
+    try:
+      # List 10 customers oredering by name
+      items = self.sock.execute_kw(self.db, self.uid, self.password,
+        'res.partner', 'search_read',
+        [[['customer', '=', True]]],
+        {'fields': ['name', 'state_id'], 'order': 'name ASC', 'limit': 10}
+      )
+
+      for item in items:
+        print item  
+    
+    except:
+      print '\nOcorreu um erro, contate o administrador.\n'
+  	
