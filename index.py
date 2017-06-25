@@ -22,11 +22,11 @@ class odooActivities():
       if uid:
         self.uid = uid
 
-        print "\nLogin realizado com secesso. \n"
+        print '\nLogin realizado com secesso. \n'
       else:
-        print "\nVerifique as credenciais de acesso."
+        print '\nVerifique as credenciais de acesso.'
     except:
-      print "\nOcorreu um erro, contate com o administrador.\n"
+      print '\nOcorreu um erro, contate com o administrador.\n'
 
   def insert(self, name, email, phone, zip_code):
     try:
@@ -46,7 +46,7 @@ class odooActivities():
       else:
         print '\nNão foi possivel salvar o registro do cliente! \n'
     except:
-      print "\nOcorreu um erro, contate o administrador.\n"
+      print '\nOcorreu um erro, contate o administrador.\n'
 
   def update(self, rg_fisica):
     try:
@@ -60,4 +60,13 @@ class odooActivities():
       else:
         print '\nNão foi possível atualizar o registro.\n'
     except:
-      print "\nOcorreu um erro, contate o administrador.\n"
+      print '\nOcorreu um erro, contate o administrador.\n'
+
+  def count(self):
+    try:
+      count = self.sock.execute_kw(self.db, self.uid, self.password, 'res.partner', 'search_count', [
+      	[['customer', '=', True]]])
+
+      print '\nAtualmente existem ' + str(count) + ' clientes na base.\n'
+    except:
+      print '\nOcorreu um erro, contate o administrador.\n'
