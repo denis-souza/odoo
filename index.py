@@ -35,8 +35,7 @@ class odooActivities():
         'name': name,
         'email': email,
         'phone': phone,
-        'zip': zip_code
-      }])
+        'zip': zip_code}])
   
       if id_new_customer:
         self.customer_id = id_new_customer
@@ -52,8 +51,7 @@ class odooActivities():
     try:
       #Update record.
       update = self.sock.execute_kw(self.db, self.uid, self.password, 'res.partner', 'write', [
-        [self.customer_id], {'rg_fisica': rg_fisica}
-      ])
+        [self.customer_id], {'rg_fisica': rg_fisica}])
   
       if update:
         print '\nRG atualizado com sucesso.\n'
@@ -77,8 +75,7 @@ class odooActivities():
       items = self.sock.execute_kw(self.db, self.uid, self.password,
         'res.partner', 'search_read',
         [[['customer', '=', True]]],
-        {'fields': ['name', 'state_id'], 'order': 'name ASC', 'limit': 10}
-      )
+        {'fields': ['name', 'state_id'], 'order': 'name ASC', 'limit': 10})
 
       for item in items:
         print item  
@@ -108,8 +105,7 @@ class odooActivities():
           'amount_total', 
           'partner_invoice_id',
           'total_tax',
-        ], 'order': 'amount_total desc', 'limit': 1}
-      )
+        ], 'order': 'amount_total desc', 'limit': 1})
 
       for item_order in items_order:
         print item_order
@@ -119,11 +115,32 @@ class odooActivities():
           [[['order_id', '=', item_order['id']]]],
           {'fields': [
             'name',
-            'price_subtotal',
-          ]}
-        )
+            'price_subtotal']})
 
         for item in items_order_line:
           print item
+    except:
+      print '\nOcorreu um erro, contate o administrador.\n'
+
+  def show_percentage_sales(self):
+    try:
+      quotes = self.sock.execute_kw(self.db, self.uid, self.password,
+        'sale.order', 'search_read', [],
+        {'fields': ['amount_total']})
+
+      amount_quotes = sum(quote['amount_total'] for quote in quotes)
+
+      sales_order = self.sock.execute_kw(self.db, self.uid, self.password,
+        'sale.order', 'search_read', [[['state', '=', 'sale']]],
+        {'fields': ['amount_total']})
+
+      amount_sales_order = sum(sale_order['amount_total'] for sale_order in sales_order)
+
+      percentage = "%.2f" % ((amount_sales_order / amount_quotes) * 100)
+
+      print '\nTotal de cotações: ' + str(amount_quotes)
+      print '\nTotal de ordens de vendas: ' + str(amount_sales_order)
+      print '\nPercentual de vendas: ' + str(percentage) + '%\n'
+
     except:
       print '\nOcorreu um erro, contate o administrador.\n'
